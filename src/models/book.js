@@ -1,37 +1,26 @@
-const { getDb } = require('../config/database')
-class Book {
-    constructor(title, synopsys, author, date) {
-        this.title = title;
-        this.synopsys = synopsys;
-        this.author = author;
-        this.date = date;
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const bookSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    synopsys: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
     }
 
-    save() {
-        const db = getDb();
-        return db.collection('books').insertOne(this)
-            .then(r => {
-                console.log(r)
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    }
+});
 
-    static fetchAll() {
-        const db = getDb();
-        return db
-            .collection('books')
-            .find()
-            .toArray()
-            .then(books => {
-                console.log(books);
-                return books;
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-}
+module.exports = mongoose.model('Book', bookSchema)
 
-module.exports = Book;

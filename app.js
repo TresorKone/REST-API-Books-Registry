@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const bookRoutes = require('./src/routes/book');
-const { mongoConnect } = require('./src/config/database')
+const db_URI = require('./src/config/db_URI');
+//const { mongoConnect } = require('./src/config/database')
 
 const app = express();
 
@@ -18,8 +20,19 @@ app.use((req, res, next) => {
 
 app.use('/book', bookRoutes);
 
+/*
 mongoConnect(() => {
 
     app.listen(5000);
 })
+ */
+
+mongoose.connect(db_URI.URI)
+    .then(r => {
+        app.listen(5000);
+        console.log('connected')
+    })
+    .catch(err => {
+        console.log(err);
+    })
 
