@@ -8,7 +8,18 @@ const router = express.Router();
 // GET /book
 router.get('/', bookController.getIndex);
 
+// GET /book/:id
+router.get('/:bookId', bookController.getBook);
+
 // POST /book/add
 router.post('/add', bookController.postAddBook);
+
+// PATCH /book/edit/:id
+router.patch('/edit/:bookId', bookController.postEditBook);
+
+// PATCH /book/delete/:id
+router.delete('/delete/:bookId', bookController.postDeleteBook);
+
+
 
 module.exports = router;
