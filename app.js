@@ -22,6 +22,7 @@ app.use((req, res, next) => {
 app.use('/book', bookRoutes);
 
 // finding testUser for books creation
+/* no needed
 app.use((req, res, next) => {
     User.findById('63e25ebd89503390551ef19b')
         .then(user => {
@@ -33,6 +34,8 @@ app.use((req, res, next) => {
 
 );
 
+ */
+
 
 /*
 mongoConnect(() => {
@@ -43,6 +46,7 @@ mongoConnect(() => {
 
 mongoose.connect(db_URI.URI)
     .then(r => {
+
         User.findOne()
             .then(user => {
                if (!user) {

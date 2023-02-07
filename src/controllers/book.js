@@ -17,6 +17,7 @@ exports.getBook = (req, res, next) => {
     const id = req.params.bookId;
 
     Book.findById(id)
+        .populate('userId')
         .then(book => {
         res.status(200).json({
             data: book,
