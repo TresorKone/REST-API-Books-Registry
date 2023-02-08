@@ -1,6 +1,32 @@
 const Book = require('../models/book')
 
-exports.getIndex = (req, res, next) => {
+exports.getIndex = async (req, res, next) => {
+    // destructure page and limit and set default values
+    const {page = 1, limit = 4} = req.query;
+
+    try {
+        // execute query with page and limit values
+        const books = await Book.find()
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .exec();
+
+        // get total documents in the Books collection
+        const count = await Book.countDocuments();
+
+        // return response with Books, total pages, and current page
+        res.json({
+            books,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        });
+    } catch (err) {
+        res.status(400).json({
+            message: "no book in the database",
+            err
+        })
+    }
+    /*
     Book.find()
         .then(books => {
             res.status(200).json({
@@ -9,8 +35,13 @@ exports.getIndex = (req, res, next) => {
             })
         })
         .catch(err => {
-            res.status(400).json(err)
+            res.status(400).json({
+                message: "no book in the database",
+                err
+            })
         })
+
+     */
 };
 
 exports.getBook = (req, res, next) => {
@@ -19,6 +50,11 @@ exports.getBook = (req, res, next) => {
     Book.findById(id)
         .populate('userId')
         .then(book => {
+            if (!book) {
+                return res.status(404).json({
+                    message: 'could not find this post'
+                })
+            }
         res.status(200).json({
             data: book,
             message: "book details"
@@ -49,7 +85,7 @@ exports.postAddBook = (req, res, next) => {
             })
         })
         .catch(err => {
-            res.status('400').json({
+            res.status('500').json({
                 message: 'book not added',
                 err: err
             });
@@ -101,7 +137,7 @@ exports.postDeleteBook = (req, res, next) => {
             })
         })
         .catch(err => {
-            res.status(400).json({
+            res.status(500).json({
                 error: err
             })
         })
