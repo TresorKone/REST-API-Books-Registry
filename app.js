@@ -23,48 +23,9 @@ app.use((req, res, next) => {
 app.use('/book', bookRoutes);
 app.use('/auth', userRoutes);
 
-// finding testUser for books creation
-/* no needed
-app.use((req, res, next) => {
-    User.findById('63e25ebd89503390551ef19b')
-        .then(user => {
-            req.user = user;
-            next();
-        })
-        .catch();
-    }
-
-);
-
- */
-
-
-/*
-mongoConnect(() => {
-
-    app.listen(5000);
-})
- */
 
 mongoose.connect(db_URI.URI)
     .then(r => {
-/*
-no needed
-        User.findOne()
-            .then(user => {
-               if (!user) {
-                   const user = new User({
-                       name: 'TestUser',
-                       email: 'testUser@test.com',
-                       books: {
-                           bookId: []
-                       }
-                   });
-                   user.save();
-               }
-            });
- */
-
         app.listen(5000);
         console.log('connected')
     })

@@ -26,22 +26,7 @@ exports.getIndex = async (req, res, next) => {
             message: "books not fetched"
         })
     }
-    /*
-    Book.find()
-        .then(books => {
-            res.status(200).json({
-                data: books,
-                message: "books list"
-            })
-        })
-        .catch(err => {
-            res.status(400).json({
-                message: "no book in the database",
-                err
-            })
-        })
 
-     */
 };
 
 exports.getBook = (req, res, next) => {
