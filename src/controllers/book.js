@@ -15,15 +15,15 @@ exports.getIndex = async (req, res, next) => {
         const count = await Book.countDocuments();
 
         // return response with Books, total pages, and current page
-        res.json({
+        res.status(200).json({
             books,
             totalPages: Math.ceil(count / limit),
             currentPage: page
         });
     } catch (err) {
+        console.log(err)
         res.status(400).json({
-            message: "no book in the database",
-            err
+            message: "books not fetched"
         })
     }
     /*
@@ -85,9 +85,9 @@ exports.postAddBook = (req, res, next) => {
             })
         })
         .catch(err => {
+            console.log(err)
             res.status('500').json({
                 message: 'book not added',
-                err: err
             });
         });
 };
@@ -115,9 +115,9 @@ exports.postEditBook = (req, res, next) => {
                 })
         })
         .catch(err => {
+            console.log(err)
             res.status('400').json({
                 message: 'book not edited',
-                err: err
             })
         })
 };
@@ -137,9 +137,8 @@ exports.postDeleteBook = (req, res, next) => {
             })
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
-            })
+            console.log(err)
+            res.status(500).json('book deleted')
         })
 };
 

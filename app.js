@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const bookRoutes = require('./src/routes/book');
+const userRoutes = require('./src/routes/auth');
 const db_URI = require('./src/config/db_URI');
 const User = require('./src/models/user');
 //const { mongoConnect } = require('./src/config/database')
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/book', bookRoutes);
+app.use('/auth', userRoutes);
 
 // finding testUser for books creation
 /* no needed
@@ -46,7 +48,8 @@ mongoConnect(() => {
 
 mongoose.connect(db_URI.URI)
     .then(r => {
-
+/*
+no needed
         User.findOne()
             .then(user => {
                if (!user) {
@@ -60,6 +63,7 @@ mongoose.connect(db_URI.URI)
                    user.save();
                }
             });
+ */
 
         app.listen(5000);
         console.log('connected')
