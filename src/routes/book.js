@@ -2,6 +2,7 @@ const express = require('express');
 const { body } = require('express-validator/check');
 
 const bookController = require('../controllers/book');
+const jwtCheck = require('../middleware/check-auth')
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get('/', bookController.getIndex);
 router.get('/:bookId', bookController.getBook);
 
 // POST /book/add
-router.post('/add', bookController.postAddBook);
+router.post('/add', jwtCheck, bookController.postAddBook);
 
 // PATCH /book/edit/:id
 router.patch('/edit/:bookId', bookController.postEditBook);
