@@ -1,4 +1,6 @@
-const Book = require('../models/book')
+const Book = require('../models/book');
+
+const { validationResult } = require('express-validator/check');
 
 exports.getIndex = async (req, res, next) => {
     // destructure page and limit and set default values
@@ -51,6 +53,8 @@ exports.getBook = (req, res, next) => {
 }
 
 exports.postAddBook = (req, res, next) => {
+    const error = validationResult(req);
+
     const title = req.body.title;
     const synopsys = req.body.synopsys;
     //const author = req.body.author;
@@ -63,6 +67,15 @@ exports.postAddBook = (req, res, next) => {
         date: date,
         content: content
     });
+
+    if (!error.isEmpty()) {
+        console.log(error);
+        return res.json({
+            message: 'validation error',
+            errors: error.array()[0].msg + 'for the field' + ' ' + error.array()[0].param
+        })
+    }
+
     book.save()
         .then(r => {
             res.status(201).json({
@@ -72,7 +85,7 @@ exports.postAddBook = (req, res, next) => {
         .catch(err => {
             console.log(err)
             res.status('500').json({
-                message: 'book not added',
+                message: 'book not added'
             });
         });
 };
