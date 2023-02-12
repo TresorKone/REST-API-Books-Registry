@@ -108,6 +108,12 @@ exports.postEditBook = (req, res, next) => {
 
     Book.findById(id)
         .then(book => {
+
+            //user check
+            if (book.userId.toString() !== req.userId) {
+                return res.status(403).json('not authorized')
+            }
+
             book.title = updatedTitle;
             book.synopsys = updatedSynopsys;
             book.date = updatedDate;
@@ -134,6 +140,11 @@ exports.postDeleteBook = (req, res, next) => {
 
     Book.findById(id)
         .then(book => {
+            //user check
+            if (book.userId.toString() !== req.userId) {
+                return res.status(403).json('not authorized')
+            }
+
             return Book.deleteOne({
                 _id: id
             });
