@@ -22,7 +22,7 @@ exports.postSignup = (req, res, next) => {
                     const user = await User({
                         name: name,
                         email: email,
-                        password: hash,
+                        password: hash
                     });
                     user.save()
                         .then(r => {

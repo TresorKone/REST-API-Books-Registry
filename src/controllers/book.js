@@ -1,4 +1,5 @@
 const Book = require('../models/book');
+const User = require('../models/user');
 
 const { validationResult } = require('express-validator/check');
 
@@ -65,7 +66,8 @@ exports.postAddBook = (req, res, next) => {
         title: title,
         synopsys: synopsys,
         date: date,
-        content: content
+        content: content,
+        userId: req.userId
     });
 
     if (!error.isEmpty()) {
@@ -77,6 +79,13 @@ exports.postAddBook = (req, res, next) => {
     }
 
     book.save()
+        .then(r => {
+            return User.findById(req.userId);
+        })
+        .then(user => {
+            user.books.push(book);
+            return user.save();
+        })
         .then(r => {
             res.status(201).json({
                 message: 'book added'

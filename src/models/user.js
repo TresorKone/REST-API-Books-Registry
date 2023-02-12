@@ -15,17 +15,13 @@ const userSchema = new Schema({
        type: String,
         required: true
     },
-    books: {
-        booksId: [{
-            productId: {
-                type: Schema.Types.ObjectId,
-                ref: 'Book'
-            },
-            number: {
-                type: Number
-            }
-        }]
-    }
+    books: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Book'
+        }
+    ]
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
